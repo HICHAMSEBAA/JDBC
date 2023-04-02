@@ -1,0 +1,13 @@
+DROP DATABASE IF EXISTS HICHAM;
+
+CREATE DATABASE HICHAM;
+
+USE HICHAM;
+
+CREATE TABLE employee (
+    id INT(15) PRIMARY KEY ,
+    name VARCHAR(30),
+    gender BOOLEAN,
+    birth_date DATE,
+    salary REAL
+);
