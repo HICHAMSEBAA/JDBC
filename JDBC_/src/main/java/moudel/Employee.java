@@ -9,6 +9,8 @@ public class Employee {
     private Date birth_date;
     private float salary;
 
+
+
     public Employee() {
     }
 
@@ -59,6 +61,10 @@ public class Employee {
 
     public void setSalary(float salary) {
         this.salary = salary;
+    }
+
+    public static EmployeeBuilder builder() {
+        return new EmployeeBuilder();
     }
 
     @Override

@@ -24,11 +24,18 @@ public class EmployeeDB_Imp implements EmployeeDB{
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                Employee employee = new Employee(resultSet.getInt("id"),
-                        resultSet.getString("name"),
-                        resultSet.getBoolean("gender"),
-                        resultSet.getDate("birth_date"),
-                        resultSet.getFloat("salary"));
+                //Employee employee = new Employee(resultSet.getInt("id"),
+                  //      resultSet.getString("name"),
+                    //    resultSet.getBoolean("gender"),
+                      //  resultSet.getDate("birth_date"),
+                        //resultSet.getFloat("salary"));
+                Employee employee = Employee.builder()
+                        .id(resultSet.getInt("id"))
+                        .name(resultSet.getString("name"))
+                        .gender(resultSet.getBoolean("gender"))
+                        .birth_date(resultSet.getDate("birth_date"))
+                        .salary(resultSet.getFloat("salary")).build();
+
                 employees.add(employee);
             }
 
@@ -48,6 +55,36 @@ public class EmployeeDB_Imp implements EmployeeDB{
 
     @Override
     public Employee findById(int id) {
+        Connection con = Java_DB.getConnection();
+        if (con == null){
+            return null;
+        }
+        String query = "SELECT * FROM `employee` WHERE id = ?";
+        try (PreparedStatement preparedStatement = con.prepareStatement(query)) {
+
+            preparedStatement.setInt(1,id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                Employee employee = Employee.builder()
+                        .id(resultSet.getInt("id"))
+                        .name(resultSet.getString("name"))
+                        .gender(resultSet.getBoolean("gender"))
+                        .birth_date(resultSet.getDate("birth_date"))
+                        .salary(resultSet.getFloat("salary")).build();
+                return employee;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            try {
+                con.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
         return null;
     }
 
